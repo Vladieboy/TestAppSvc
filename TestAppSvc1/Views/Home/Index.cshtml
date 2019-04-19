@@ -1,0 +1,64 @@
+﻿<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>TEST CREATE</h2>
+        <p>
+            <button onclick="createinvoice(); return false;">Post a new invoice</button>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>TEST READ</h2>
+        <p>
+            <button onclick="readinvoice(); return false;">Read invoice</button>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
+    </div>
+</div>
+@section scripts{
+    <script>
+        function createinvoice() {
+            var invoiceno = '@Guid.NewGuid().ToString().ToLower()';
+            var data = {
+                "InvoiceId": invoiceno,
+                "InoivceNo": "",
+                "InvocieDate": "@DateTime.Now.ToString()",
+                "InvoiceDetails": [
+                    {
+                        "InvoiceId": invoiceno,
+                        "Item": "BANANA",
+                        "UnitPrice": 3.5,
+                        "Qty": 5
+                    },
+                    {
+                        "InvoiceId": invoiceno,
+                        "Item": "APPLE",
+                        "UnitPrice": 2.75,
+                        "Qty": 2
+                    }
+                ]
+            }
+            $.post('/api/invoices', data, function (result) {
+                console.log(result);
+            });
+        }
+
+        function readinvoice() {
+            $.get('/api/invoices/a3afd82f-cfdd-43c4-927b-d684c0772a34', function (obj) {
+                if (obj.success) {
+                    var data = JSON.parse(obj.data);
+                    console.log(data);
+                } else {
+                    alert(obj.data);
+                }
+            });
+        }
+    </script>
+}
